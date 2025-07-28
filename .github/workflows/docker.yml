@@ -31,20 +31,17 @@ jobs:
       # 构建镜像（用两个标签）
       - name: 🛠️ 构建 Docker 镜像
         run: |
-          IMAGE_NAME=$(basename "${{ github.repository }}")
-          GHCR_IMAGE=ghcr.io/${{ github.repository_owner }}/$IMAGE_NAME
-          DOCKERHUB_IMAGE=${{ secrets.DOCKERHUB_USERNAME }}/$IMAGE_NAME
+          GHCR_IMAGE=ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}
+          DOCKERHUB_IMAGE=${{ secrets.DOCKERHUB_USERNAME }}/${{ github.event.repository.name }}
 
           docker build -t $GHCR_IMAGE -t $DOCKERHUB_IMAGE .
 
       # 推送到 GHCR
       - name: 📤 推送镜像到 GHCR
         run: |
-          IMAGE_NAME=$(basename "${{ github.repository }}")
-          docker push ghcr.io/${{ github.repository_owner }}/$IMAGE_NAME
+          docker push ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}
 
       # 推送到 Docker Hub
       - name: 📤 推送镜像到 Docker Hub
         run: |
-          IMAGE_NAME=$(basename "${{ github.repository }}")
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/$IMAGE_NAME
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/${{ github.event.repository.name }}
