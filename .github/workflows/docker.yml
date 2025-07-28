@@ -31,7 +31,7 @@ jobs:
       # 构建镜像（用两个标签）
       - name: 🛠️ 构建 Docker 镜像
         run: |
-          GHCR_IMAGE=ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}
+          GHCR_IMAGE=ghcr.io/${{ github.repository }}
           DOCKERHUB_IMAGE=${{ secrets.DOCKERHUB_USERNAME }}/${{ github.event.repository.name }}
 
           docker build -t $GHCR_IMAGE -t $DOCKERHUB_IMAGE .
@@ -39,7 +39,7 @@ jobs:
       # 推送到 GHCR
       - name: 📤 推送镜像到 GHCR
         run: |
-          docker push ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}
+          docker push ghcr.io/${{ github.repository }}
 
       # 推送到 Docker Hub
       # - name: 📤 推送镜像到 Docker Hub
