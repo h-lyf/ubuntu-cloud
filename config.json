@@ -1,0 +1,147 @@
+{
+    "log": {
+        "loglevel": "warning"
+    },
+    "dns": {
+        "servers": [
+            "https+local://8.8.8.8/dns-query",
+            "localhost"
+        ],
+        "queryStrategy": "UseIPv4"
+    },
+    "routing": {
+        "domainStrategy": "IPIfNonMatch",
+        "rules": [
+            {
+                "type": "field",
+                "domain": [
+                    "${SSH_DOMAIN}"
+                ],
+                "outboundTag": "ssh"
+            },
+            {
+                "type": "field",
+                "ip": [
+                    "geoip:private"
+                ],
+                "outboundTag": "block"
+            },
+            {
+                "type": "field",
+                "domain": [
+                    "geosite:category-ads-all"
+                ],
+                "outboundTag": "block"
+            }
+        ]
+    },
+    "inbounds": [
+        {
+            "allocate": {
+                "concurrency": 3,
+                "refresh": 5,
+                "strategy": "always"
+            },
+            "listen": "0.0.0.0",
+            "port": 8443,
+            "protocol": "vless",
+            "settings": {
+                "clients": [
+                    {
+                        "email": "",
+                        "flow": "",
+                        "id": "${UUID}"
+                    }
+                ],
+                "decryption": "none",
+                "fallbacks": []
+            },
+            "sniffing": {
+                "destOverride": [
+                    "http",
+                    "tls",
+                    "quic",
+                    "fakedns"
+                ],
+                "enabled": false,
+                "metadataOnly": false,
+                "routeOnly": false
+            },
+            "streamSettings": {
+                "network": "ws",
+                "security": "none",
+                "wsSettings": {
+                    "acceptProxyProtocol": false,
+                    "headers": {},
+                    "heartbeatPeriod": 0,
+                    "host": "",
+                    "path": "/?ed=2048"
+                }
+            }
+        },
+        {
+            "allocate": {
+                "concurrency": 3,
+                "refresh": 5,
+                "strategy": "always"
+            },
+            "listen": "0.0.0.0",
+            "port": 2053,
+            "protocol": "vless",
+            "settings": {
+                "clients": [
+                    {
+                        "email": "",
+                        "flow": "",
+                        "id": "${UUID}"
+                    }
+                ],
+                "decryption": "none",
+                "fallbacks": []
+            },
+            "sniffing": {
+                "destOverride": [
+                    "http",
+                    "tls",
+                    "quic",
+                    "fakedns"
+                ],
+                "enabled": false,
+                "metadataOnly": false,
+                "routeOnly": false
+            },
+            "streamSettings": {
+                "network": "xhttp",
+                "security": "none",
+                "xhttpSettings": {
+                    "headers": {},
+                    "host": "",
+                    "mode": "auto",
+                    "noSSEHeader": false,
+                    "path": "/?ed=2048",
+                    "scMaxBufferedPosts": 30,
+                    "scMaxEachPostBytes": "1000000",
+                    "scStreamUpServerSecs": "20-80",
+                    "xPaddingBytes": "100-1000"
+                }
+            }
+        }
+    ],
+    "outbounds": [
+        {
+            "tag": "direct",
+            "protocol": "freedom"
+        },
+        {
+            "tag": "block",
+            "protocol": "blackhole"
+        },
+        {
+            "tag": "ssh",
+            "protocol": "freedom",
+            "settings": {
+                "redirect": "127.0.0.1:0"
+            }
+        }
+    ]
+}
