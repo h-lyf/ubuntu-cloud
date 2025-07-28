@@ -31,7 +31,7 @@ jobs:
       # 构建镜像（用两个标签）
       - name: 🛠️ 构建 Docker 镜像
         run: |
-          IMAGE_NAME=ubuntu-cloud
+          IMAGE_NAME=$(basename "${{ github.repository }}")
           GHCR_IMAGE=ghcr.io/${{ github.repository_owner }}/$IMAGE_NAME
           DOCKERHUB_IMAGE=${{ secrets.DOCKERHUB_USERNAME }}/$IMAGE_NAME
 
@@ -40,9 +40,11 @@ jobs:
       # 推送到 GHCR
       - name: 📤 推送镜像到 GHCR
         run: |
-          docker push ghcr.io/${{ github.repository_owner }}/ubuntu-cloud
+          IMAGE_NAME=$(basename "${{ github.repository }}")
+          docker push ghcr.io/${{ github.repository_owner }}/$IMAGE_NAME
 
       # 推送到 Docker Hub
       - name: 📤 推送镜像到 Docker Hub
         run: |
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/ubuntu-cloud
+          IMAGE_NAME=$(basename "${{ github.repository }}")
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/$IMAGE_NAME
