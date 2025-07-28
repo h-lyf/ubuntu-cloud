@@ -1,0 +1,48 @@
+name: 📦 Build and Push Docker Image to GHCR & DockerHub
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 🧾 拉取仓库代码
+        uses: actions/checkout@v3
+
+      # 登录 GHCR
+      - name: 🔐 登录 GitHub Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GHCR_PAT }}
+
+      # 登录 Docker Hub
+      - name: 🔐 登录 Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      # 构建镜像（用两个标签）
+      - name: 🛠️ 构建 Docker 镜像
+        run: |
+          IMAGE_NAME=ubuntu-cloud
+          GHCR_IMAGE=ghcr.io/${{ github.repository_owner }}/$IMAGE_NAME
+          DOCKERHUB_IMAGE=${{ secrets.DOCKERHUB_USERNAME }}/$IMAGE_NAME
+
+          docker build -t $GHCR_IMAGE -t $DOCKERHUB_IMAGE .
+
+      # 推送到 GHCR
+      - name: 📤 推送镜像到 GHCR
+        run: |
+          docker push ghcr.io/${{ github.repository_owner }}/ubuntu-cloud
+
+      # 推送到 Docker Hub
+      - name: 📤 推送镜像到 Docker Hub
+        run: |
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/ubuntu-cloud
