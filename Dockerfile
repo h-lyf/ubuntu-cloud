@@ -7,7 +7,7 @@ ENV PASSWD=123456
 
 # 更新包列表，安装必要软件（包含 envsubst）
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    openssh-server bash curl unzip supervisor vim nginx gettext-base && \
+    ca-certificates openssh-server bash curl unzip supervisor vim nginx gettext-base && \
     rm -rf /var/lib/apt/lists/*
 
 # 设置 root 密码（根据需要修改）
