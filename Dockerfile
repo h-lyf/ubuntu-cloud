@@ -33,8 +33,9 @@ RUN mkdir -p /usr/local/bin/xray && \
 
 # 复制配置模板和启动脚本
 COPY config.json /etc/xray/config.template
-COPY start.sh /start.sh
-RUN chmod +x /start.sh
+RUN mkdir -p /shell
+COPY start.sh /shell/start.sh
+RUN chmod +x /shellstart.sh
 
 # 复制 supervisord 配置
 COPY supervisord.conf /etc/supervisord.conf
@@ -43,4 +44,4 @@ COPY supervisord.conf /etc/supervisord.conf
 EXPOSE 22 443 8443 2053
 
 # 容器启动入口
-CMD ["/start.sh"]
+CMD ["/shell/start.sh"]
