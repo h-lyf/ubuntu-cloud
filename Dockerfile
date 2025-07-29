@@ -35,7 +35,7 @@ RUN mkdir -p /usr/local/bin/xray && \
 COPY config.json /etc/xray/config.template
 RUN mkdir -p /shell
 COPY start.sh /shell/start.sh
-RUN chmod +x /shellstart.sh
+RUN chmod +x /shell/start.sh
 
 # 复制 supervisord 配置
 COPY supervisord.conf /etc/supervisord.conf
