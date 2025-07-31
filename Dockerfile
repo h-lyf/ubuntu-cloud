@@ -23,7 +23,7 @@ RUN sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/
 # 创建 supervisord 需要的目录
 RUN mkdir -p /var/run/supervisor /var/log && chmod 755 /var/run/supervisor /var/log
 
-# 安装 Xray & sing-box
+# 安装 Xray & sing-box & Openlist
 RUN XRAY_VERSION=$(curl -s https://api.github.com/repos/XTLS/Xray-core/releases/latest | grep '"tag_name":' | sed -E 's/.*"v([^"]+)".*/v\1/') && \
     curl -L -o /tmp/xray.zip https://github.com/XTLS/Xray-core/releases/download/${XRAY_VERSION}/Xray-linux-64.zip && \
     unzip /tmp/xray.zip -d /usr/local/bin/ && \
@@ -35,7 +35,6 @@ RUN SING_BOX_VERSION=$(curl -s https://api.github.com/repos/SagerNet/sing-box/re
     cp /usr/local/bin/sing-box-${SING_BOX_VERSION#v}-linux-amd64/* /usr/local/bin/ && \
     chmod +x /usr/local/bin/sing-box && \
     rm -rf /usr/local/bin/sing-box-${SING_BOX_VERSION#v}-linux-amd64/ /tmp/sing-box.tar.gz
-
 RUN OPENLIST_VERSION=$(curl -s https://api.github.com/repos/OpenListTeam/OpenList/releases/latest | grep '"tag_name":' | sed -E 's/.*"v([^"]+)".*/v\1/') && \
     curl -L -o /tmp/openlist.tar.gz https://github.com/OpenListTeam/OpenList/releases/download/${OPENLIST_VERSION}/openlist-linux-amd64.tar.gz && \
     tar -xvzf /tmp/openlist.tar.gz -C /usr/local/bin/ && \
