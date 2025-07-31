@@ -6,7 +6,7 @@ if [ -n "$PASSWD" ]; then
 fi
 
 # 生成最终配置文件
-mkdir -p /root/data
+mkdir -p /root/data /root/data/xray /root/data/sing-box
 if [ ! -f /root/data/xray/config.json ]; then
   envsubst < /etc/xray/config.template > /root/data/xray/config.json
 fi
