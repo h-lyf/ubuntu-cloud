@@ -23,7 +23,7 @@ RUN sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/
 # 创建 supervisord 需要的目录
 RUN mkdir -p /var/run/supervisor /var/log && chmod 755 /var/run/supervisor /var/log
 
-# 安装 Xray & sing-box & Openlist
+# 安装 Xray & Openlist
 RUN XRAY_VERSION=$(curl -s https://api.github.com/repos/XTLS/Xray-core/releases/latest | grep '"tag_name":' | sed -E 's/.*"v([^"]+)".*/v\1/') && \
     curl -L -o /tmp/xray.zip https://github.com/XTLS/Xray-core/releases/download/${XRAY_VERSION}/Xray-linux-64.zip && \
     unzip /tmp/xray.zip -d /usr/local/bin/ && \
