@@ -29,12 +29,6 @@ RUN XRAY_VERSION=$(curl -s https://api.github.com/repos/XTLS/Xray-core/releases/
     unzip /tmp/xray.zip -d /usr/local/bin/ && \
     chmod +x /usr/local/bin/xray && \
     rm /tmp/xray.zip
-RUN SING_BOX_VERSION=$(curl -s https://api.github.com/repos/SagerNet/sing-box/releases/latest | grep '"tag_name":' | sed -E 's/.*"v([^"]+)".*/v\1/') && \
-    curl -L -o /tmp/sing-box.tar.gz https://github.com/SagerNet/sing-box/releases/download/${SING_BOX_VERSION}/sing-box-${SING_BOX_VERSION#v}-linux-amd64.tar.gz && \
-    tar -xvzf /tmp/sing-box.tar.gz -C /usr/local/bin/ && \
-    cp /usr/local/bin/sing-box-${SING_BOX_VERSION#v}-linux-amd64/* /usr/local/bin/ && \
-    chmod +x /usr/local/bin/sing-box && \
-    rm -rf /usr/local/bin/sing-box-${SING_BOX_VERSION#v}-linux-amd64/ /tmp/sing-box.tar.gz
 RUN OPENLIST_VERSION=$(curl -s https://api.github.com/repos/OpenListTeam/OpenList/releases/latest | grep '"tag_name":' | sed -E 's/.*"v([^"]+)".*/v\1/') && \
     curl -L -o /tmp/openlist.tar.gz https://github.com/OpenListTeam/OpenList/releases/download/${OPENLIST_VERSION}/openlist-linux-amd64.tar.gz && \
     tar -xvzf /tmp/openlist.tar.gz -C /usr/local/bin/ && \
@@ -43,7 +37,6 @@ RUN OPENLIST_VERSION=$(curl -s https://api.github.com/repos/OpenListTeam/OpenLis
 
 # 复制配置模板和启动脚本
 COPY xray.json /etc/xray/config.template
-COPY sing-box.json /etc/sing-box/config.template
 RUN mkdir -p /shell
 COPY start.sh /shell/start.sh
 RUN chmod +x /shell/start.sh
