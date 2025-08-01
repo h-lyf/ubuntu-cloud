@@ -10,6 +10,3 @@ envsubst < /etc/xray/config.template > /etc/xray/config.json
 
 # 启动 supervisord 管理服务
 exec /usr/bin/supervisord -c /etc/supervisord.conf
-
-# 启动 openlist
-nohup /usr/local/bin/openlist server > /var/log/openlist.out.log 2> /var/log/openlist.err.log &
