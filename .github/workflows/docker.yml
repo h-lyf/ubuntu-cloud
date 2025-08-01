@@ -21,7 +21,7 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GHCR_PAT }}
 
-      # 构建镜像（用两个标签）
+      # 构建镜像
       - name: 🛠️ 构建 Docker 镜像
         run: |
           GHCR_IMAGE=ghcr.io/${{ github.repository }}
